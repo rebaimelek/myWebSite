@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+   <title>tittle</title>
+
+  <body>
+  
+     <script>
+    // window.location='./main.html';
+	 
+	  if(window.openDatabase)
+{
+    DB.instance = openDatabase(params.db,params.version,params.displayName,params.maxSize);
+   }
+else
+{
+    alert("Le navigateur ne supporte pas les bases de données.");
+}
+ alert("Le navigateur supporte les bases de données.");
+
+
+$(document).ready(function(){
+    DB.getInstance();
+});
+var params = {
+    db: 'ligams',                         //nom de la BDD
+    version: '1.0',                        //version
+    displayName: 'Ligams Database',        //nom de la BDD affiché
+    maxSize: 100000                        //en bytes
+};
+var DB = {};
+/**
+  * Renvoi l'instance unique de la connexion à la base de données locale, null si erreur
+  */
+DB.getInstance = function(){
+    if(DB.instance!=null) return DB.instance; //accès déjà défini, on le renvoi (singleton)
+    try{
+        if(window.openDatabase){
+            DB.instance = openDatabase(params.db,params.version,params.displayName,params.maxSize);
+			alert("BD supported");
+            createDB();
+            return DB.instance;
+        }else{
+            alert("Le navigateur ne supporte pas les bases de données.");
+        }
+    }catch(e){
+        if(e===2) console.log("Version de la base de données invalide.");
+        else console.log("Exception : "+e);
+    }
+    DB.instance = null;
+    return null;
+};
+</script>
+
+  </body>
+</html>
